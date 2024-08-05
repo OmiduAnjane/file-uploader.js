@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FileUploader Documentation</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+    }
+
+    .section-title {
+      font-family: 'Roboto', sans-serif;
+      color: #007bff;
+      margin-bottom: 20px;
+      font-weight: 700;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: #007bff;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    .card {
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-header {
+      background-color: #007bff;
+      color: #ffffff;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .card-body {
+      padding: 20px;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .icon {
+      font-size: 1.5rem;
+      color: #007bff;
+      margin-right: 10px;
+    }
+
+    pre {
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+      overflow-x: auto;
+      margin-top: 20px;
+      font-size: 0.875rem;
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    code {
+      font-size: 0.875rem;
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    footer {
+      background-color: #343a40;
+      color: #ffffff;
+      padding: 15px;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      font-family: 'Open Sans', sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container mt-5">
+    <main>
+      <section id="introduction" class="card">
+        <div class="card-header">
+          <i class="fas fa-cloud-upload-alt icon"></i> Introduction
+        </div>
+        <div class="card-body">
+          <h1 class="section-title">FileUploader</h1>
+          <p>FileUploader is a flexible and powerful tool for handling file uploads in Node.js applications. It supports various storage backends, including local filesystems, AWS S3, and Google Cloud Storage, providing a secure and scalable solution for managing file uploads.</p>
+        </div>
+      </section>
+
+      <section id="features" class="mt-5">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-cogs icon"></i> Features
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled">
+              <li><i class="fas fa-check-circle icon"></i> Middleware for handling file uploads in Express.</li>
+              <li><i class="fas fa-cloud icon"></i> Support for multiple file storage backends (local filesystem, AWS S3, Google Cloud Storage).</li>
+              <li><i class="fas fa-file-alt icon"></i> File validation (size, type, etc.).</li>
+              <li><i class="fas fa-upload icon"></i> Chunked uploads for large files.</li>
+              <li><i class="fas fa-image icon"></i> Image processing and resizing utilities.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="installation" class="mt-5">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-download icon"></i> Installation
+          </div>
+          <div class="card-body">
+            <pre><code class="language-bash">npm install file-uploader-js3</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="usage" class="mt-5">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-code icon"></i> Usage
+          </div>
+          <div class="card-body">
+            <h2 class="section-title">Middleware</h2>
+            <pre><code class="language-js">const express = require('express');
+const { fileUpload } = require('file-uploader-js3');
+
+const app = express();
+
+// Local storage
+const upload = fileUpload('local', { destination: 'uploads/' });
+
+app.post('/upload', upload.single('file'), (req, res) => {
+  res.send('File uploaded successfully');
+});
+
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+
+// AWS S3 storage
+const upload = fileUpload('s3', {
+  bucket: 'your-bucket-name',
+});
+
+app.post('/upload', upload.single('file'), (req, res) => {
+  res.send('File uploaded successfully');
+});
+
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+
+// Google Cloud Storage (GCS) storage
+const upload = fileUpload('gcs', {
+  bucket: 'your-bucket-name',
+});
+
+app.post('/upload', upload.single('file'), (req, res) => {
+  res.send('File uploaded successfully');
+});
+
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+</code></pre>
+
+            <h2 class="section-title">File Validation</h2>
+            <pre><code class="language-js">const { validateFile } = require('file-uploader-js3');
+
+const options = {
+  maxSize: 1024 * 1024, // 1 MB
+  allowedTypes: ['image/jpeg', 'image/png'],
+};
+
+try {
+  validateFile(req.file, options);
+  // Continue processing the file
+} catch (error) {
+  res.status(400).send(error.message);
+}
+</code></pre>
+
+            <h2 class="section-title">Image Processing</h2>
+            <pre><code class="language-js">const { resizeImage } = require('file-uploader-js3');
+const fs = require('fs');
+
+const buffer = fs.readFileSync('path/to/image.jpg');
+
+resizeImage(buffer, 200, 200)
+  .then((resizedBuffer) => {
+    fs.writeFileSync('path/to/resized_image.jpg', resizedBuffer);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="license" class="mt-5">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-gavel icon"></i> License
+          </div>
+          <div class="card-body">
+            <h2>GNU General Public License (GPL)</h2>
+            <p>The GNU General Public License (GPL) is a widely used free software license that guarantees end users the freedom to run, study, share, and modify the software.</p>
+            <p>For the full text of the GPL, you can refer to the GNU General Public License website.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2024 FileUploader. All rights reserved.</p>
+  </footer>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
